@@ -9,15 +9,7 @@ const App = () => {
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/todos?_start=0&_limit=10")
       .then((response) => response.json())
-      .then((json) => {
-  // manupulating input API for subtask
-        const updatedValue = json;
-        updatedValue[0] = {
-          ...json[0],
-          subTasks: [10, 11]
-        }
-        setTableDataSource(updatedValue)
-      });
+      .then((json) => setTableDataSource(json));
   }, []);
 
   const columns = [
@@ -28,6 +20,7 @@ const App = () => {
       render: (text, record, index) => {
         return (
           <Switch
+            checked={taskCompleted.includes(index)}
             disabled={taskCompleted.includes(index)}
             onChange={(e) => toggleTask(e, text, record, index)}
           />
@@ -48,16 +41,24 @@ const App = () => {
     },
   ];
 
+  useEffect(() => {
+    // hardcording due to lack of API details from parent task
+    if([10,11].every(record => subtaskCompleted.includes(record))){
+      setTaskCompleted(taskCompleted.concat(0));
+    }
+  }, [subtaskCompleted])
+
   const toggleTask = (e, text, record, index, subtask = false) => {
     if (subtask) {
-      if(record.subTasks && record.subTasks.every(record => subtaskCompleted.includes(record))){
-        setTaskCompleted(taskCompleted.concat(record.id));
-      }
       setSubtaskCompleted(
         subtaskCompleted.concat(parseInt(`${record.id}${index}`))
       );
     } else {
       setTaskCompleted(taskCompleted.concat(index));
+      // hardcording due to lack of API details from parent task
+      setSubtaskCompleted(
+        [10,11]
+      );
     }
   };
 
@@ -72,16 +73,6 @@ const App = () => {
       title: "Los Angeles battles huge wildfires.",
       parentId: 1,
     },
-    {
-      id: 3,
-      title: "Los Angeles battles huge wildfires.",
-      parentId: 2,
-    },
-    {
-      id: 4,
-      title: "Los Angeles battles huge wildfires.",
-      parentId: 5,
-    },
   ];
 
   const getSubTasks = (record, index) => {
@@ -91,6 +82,7 @@ const App = () => {
       .map((i) => i.title);
     return (
       getData.length && (
+        <div className="list-item">
         <List
           dataSource={getData}
           renderItem={(item, subindex) => (
@@ -114,6 +106,7 @@ const App = () => {
             </List.Item>
           )}
         />
+        </div>
       )
     );
   };
