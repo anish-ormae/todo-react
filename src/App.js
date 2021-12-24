@@ -9,7 +9,15 @@ const App = () => {
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/todos?_start=0&_limit=10")
       .then((response) => response.json())
-      .then((json) => setTableDataSource(json));
+      .then((json) => {
+  // manupulating input API for subtask
+        const updatedValue = json;
+        updatedValue[0] = {
+          ...json[0],
+          subTasks: [10, 11]
+        }
+        setTableDataSource(updatedValue)
+      });
   }, []);
 
   const columns = [
@@ -42,6 +50,9 @@ const App = () => {
 
   const toggleTask = (e, text, record, index, subtask = false) => {
     if (subtask) {
+      if(record.subTasks && record.subTasks.every(record => subtaskCompleted.includes(record))){
+        setTaskCompleted(taskCompleted.concat(record.id));
+      }
       setSubtaskCompleted(
         subtaskCompleted.concat(parseInt(`${record.id}${index}`))
       );
@@ -78,7 +89,6 @@ const App = () => {
     const getData = subTasksData
       .filter((i) => i.parentId === record.id)
       .map((i) => i.title);
-    console.log(subtaskCompleted);
     return (
       getData.length && (
         <List
