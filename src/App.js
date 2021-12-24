@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Table, Switch, Col, Row, List, Typography } from "antd";
-import styles from "./App.css";
+import { Table, Switch, Col, Row, List } from "antd";
+import "./App.css";
+
 const App = () => {
   const [tableDataSource, setTableDataSource] = useState([]);
   const [taskCompleted, setTaskCompleted] = useState([]);
