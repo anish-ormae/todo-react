@@ -52,6 +52,10 @@ const App = () => {
           columns={columns}
           pagination={false}
           rowKey={(record) => record.id}
+          expandable={{
+            expandedRowRender: record => <p style={{ margin: 0 }}>description</p>,
+            rowExpandable: record => record.name !== 'Not Expandable',
+          }}
         />
       </Col>
       <Col span={3}></Col>
