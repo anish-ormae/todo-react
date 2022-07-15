@@ -10,6 +10,37 @@ const App = () => {
       .then((response) => response.json())
       .then((json) => setTableDataSource(json));
   }, []);
+  
+  const subTaskData = [
+  {
+    "mainTaskId": 1,
+    "userId": 1,
+    "id": 101,
+    "title": "Sub task 1",
+    "completed": false
+  },
+  {
+    "mainTaskId": 1,
+    "userId": 1,
+    "id": 102,
+    "title": "Sub task 2",
+    "completed": true
+  },
+  {
+    "mainTaskId": 3,
+    "userId": 1,
+    "id": 103,
+    "title": "Sub task 1",
+    "completed": true
+  },
+  {
+    "mainTaskId": 4,
+    "userId": 1,
+    "id": 104,
+    "title": "Sub task 1",
+    "completed": false
+  }
+];
 
   const columns = [
     {
